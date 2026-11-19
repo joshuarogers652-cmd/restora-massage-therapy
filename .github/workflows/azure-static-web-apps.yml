@@ -1,1 +1,78 @@
+# Builds, checks and deploys RESTORA to Azure Static Web Apps.
+# Runs on every push to main. Pull requests get a private preview site.
+# The secret AZURE_STATIC_WEB_APPS_API_TOKEN is stored in GitHub secrets.
+# Never paste the token into this file.
+name: Azure Static Web Apps CI/CD
 
+on:
+  workflow_dispatch: # lets you start a deployment from the Actions tab
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    name: Check the code
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            api/package-lock.json
+      - name: Install website dependencies
+        run: npm ci
+      - name: Install API dependencies
+        run: npm ci --prefix api
+      - name: Validate JSON files
+        run: npm run validate:json
+      - name: Type-check website and API
+        run: npm run typecheck && npm run build:api
+      - name: Unit and API tests (uses a temporary PostgreSQL database)
+        run: npm test
+
+  build_and_deploy_job:
+    needs: verify
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    name: Build and Deploy
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          lfs: false
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/"
+          api_location: "api"
+          output_location: "dist"
+          app_build_command: "npm run build"
+          api_build_command: "npm run build"
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "close"
