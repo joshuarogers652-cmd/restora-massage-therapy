@@ -1,0 +1,31 @@
+{
+  "name": "restora-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RESTORA Massage Therapy API (Azure Functions, Node.js v4 programming model)",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "start": "func start",
+    "test": "echo \"API tests run from the project root: npm run test:api\""
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@azure/communication-email": "1.1.0",
+    "@azure/communication-sms": "1.1.0",
+    "@azure/functions": "4.17.1",
+    "luxon": "3.7.2",
+    "pg": "8.23.1",
+    "stripe": "23.2.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/luxon": "3.7.6",
+    "@types/node": "22.18.0",
+    "@types/pg": "8.23.1",
+    "typescript": "5.9.3"
+  }
+}
