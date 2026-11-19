@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 5rem; }
+  body { @apply bg-brand-ivory font-sans text-ink antialiased; }
+  h1, h2, h3 { @apply font-display font-semibold text-brand-deep; line-height: 1.12; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  :focus-visible { @apply outline outline-2 outline-offset-2 outline-brand-royal; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+}
+
+@layer components {
+  .container-page { @apply mx-auto w-full max-w-6xl px-5; }
+  .eyebrow { @apply text-xs font-semibold uppercase tracking-[0.22em] text-brand-royal; }
+  .btn { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-[0.95rem] font-semibold transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50; }
+  .btn-primary { @apply btn bg-brand-deep text-white shadow-soft hover:bg-brand-royal; }
+  .btn-secondary { @apply btn border border-brand-deep/25 bg-white text-brand-deep hover:border-brand-deep/50 hover:bg-brand-lilac; }
+  .btn-ghost { @apply btn text-brand-deep hover:bg-brand-soft; }
+  .btn-light { @apply btn bg-white text-brand-deep shadow-soft hover:bg-brand-lilac; }
+  .btn-danger { @apply btn border border-stop-ink/30 bg-white text-stop-ink hover:bg-stop-bg; }
+  .btn-sm { @apply min-h-10 px-4 text-sm; }
+  .btn-lg { @apply min-h-12 px-7 text-base; }
+  .card { @apply rounded-card border border-line bg-white shadow-soft; }
+  .input { @apply min-h-12 w-full rounded-xl border border-line bg-white px-4 py-2.5 text-base text-ink placeholder:text-ink-muted/70 focus:border-brand-royal focus:outline-none focus:ring-2 focus:ring-brand-lavender/50 aria-[invalid=true]:border-stop-ink; }
+  .textarea { @apply input min-h-28 py-3; }
+  .label { @apply mb-1.5 block text-sm font-medium text-ink; }
+  .hint { @apply mt-1.5 text-sm text-ink-muted; }
+  .chip { @apply inline-flex items-center rounded-full bg-brand-soft px-3 py-1 text-xs font-medium text-brand-deep; }
+  .table-basic { @apply w-full text-left text-sm; }
+  .table-basic th { @apply border-b border-line px-3 py-2 font-semibold text-ink-muted; }
+  .table-basic td { @apply border-b border-line px-3 py-2.5 align-top; }
+}
