@@ -1,0 +1,6 @@
+*.ts
+!dist/**
+test
+local.settings.json
+local.settings.example.json
+tsconfig.json
