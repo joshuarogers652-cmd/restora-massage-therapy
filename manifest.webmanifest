@@ -1,0 +1,9 @@
+{
+  "name": "RESTORA Massage Therapy",
+  "short_name": "RESTORA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F4FB",
+  "theme_color": "#54266F",
+  "icons": [{ "src": "/images/restora-mark.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
